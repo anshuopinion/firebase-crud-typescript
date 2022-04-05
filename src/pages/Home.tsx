@@ -20,22 +20,9 @@ import AddCourse from "../components/AddCourse";
 import UpdateCourse from "../components/UpdateCourse";
 import { useNavigate } from "react-router-dom";
 import { SiFirebase } from "react-icons/si";
-import { m } from "framer-motion";
 const App = () => {
   const [courses, setCourses] = useState<ICourseDoc[]>([]);
   const navigate = useNavigate();
-  const fetchCourses = async () => {
-    const courses = await CourseHelperClass.getCourses();
-    setCourses(courses);
-  };
-  useEffect(() => {
-    fetchCourses();
-  }, []);
-
-  const handleDelete = async (id: string) => {
-    await CourseHelperClass.deleteCourse(id);
-    fetchCourses();
-  };
 
   return (
     <>
@@ -49,7 +36,7 @@ const App = () => {
         </Heading>
       </Flex>
       <Container maxW="container.lg" mt="8">
-        <AddCourse fetchCourse={fetchCourses} />
+        <AddCourse />
         <TableContainer>
           <Table variant="striped" colorScheme="purple">
             <Thead>
@@ -87,13 +74,9 @@ const App = () => {
                       >
                         <FaEye />
                       </Icon>
-                      <UpdateCourse
-                        fetchCourse={fetchCourses}
-                        course={course}
-                      />
+                      <UpdateCourse />
                       <Icon
                         _hover={{ color: "red.500" }}
-                        onClick={() => handleDelete(course.id)}
                         color="red.300"
                         fontSize="xl"
                       >

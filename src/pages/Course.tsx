@@ -7,17 +7,6 @@ const Course = () => {
   const { id } = useParams();
   const [course, setCourse] = useState<ICourseDoc>();
 
-  const fetchCourse = async () => {
-    if (id) {
-      const course = await CourseHelperClass.getCourse(id);
-
-      setCourse(course);
-    }
-  };
-  useEffect(() => {
-    fetchCourse();
-  }, []);
-
   return (
     <Stack m="8" p="5" boxShadow="xl">
       <Heading>{course?.name}</Heading>

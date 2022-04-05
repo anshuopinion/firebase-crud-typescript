@@ -10,11 +10,9 @@ import { FC, useState } from "react";
 import CourseHelperClass from "../CourseHelperClass";
 import Modal from "./Modal";
 
-interface IAddCourseProps {
-  fetchCourse: () => void;
-}
+interface IAddCourseProps {}
 
-const AddCourse: FC<IAddCourseProps> = ({ fetchCourse }) => {
+const AddCourse: FC<IAddCourseProps> = ({}) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -24,19 +22,7 @@ const AddCourse: FC<IAddCourseProps> = ({ fetchCourse }) => {
         <Formik
           initialValues={{ name: "", students: "", type: "" }}
           onSubmit={async (values) => {
-            setIsLoading(true);
-            try {
-              await CourseHelperClass.addCourse({
-                ...values,
-                students: parseInt(values.students),
-              });
-            } catch (error) {
-              console.log(error);
-            } finally {
-              setIsLoading(false);
-              fetchCourse();
-              onClose();
-            }
+            console.log(values);
           }}
         >
           <Form>

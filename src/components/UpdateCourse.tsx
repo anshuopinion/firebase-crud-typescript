@@ -11,12 +11,9 @@ import { FaEdit } from "react-icons/fa";
 import CourseHelperClass, { ICourse, ICourseDoc } from "../CourseHelperClass";
 import Modal from "./Modal";
 
-interface IUpdateCourseProps {
-  fetchCourse: () => void;
-  course: ICourseDoc;
-}
+interface IUpdateCourseProps {}
 
-const UpdateCourse: FC<IUpdateCourseProps> = ({ fetchCourse, course }) => {
+const UpdateCourse: FC<IUpdateCourseProps> = ({}) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -25,24 +22,12 @@ const UpdateCourse: FC<IUpdateCourseProps> = ({ fetchCourse, course }) => {
       <Modal title="Update Course" isOpen={isOpen} onClose={onClose}>
         <Formik
           initialValues={{
-            name: course.name,
-            students: course.students,
-            type: course.type,
+            name: "",
+            students: "",
+            type: "",
           }}
           onSubmit={async (values) => {
-            setIsLoading(true);
-            try {
-              await CourseHelperClass.updateCourse(course.id, {
-                ...values,
-                students: values.students,
-              });
-            } catch (error) {
-              console.log(error);
-            } finally {
-              setIsLoading(false);
-              fetchCourse();
-              onClose();
-            }
+            console.log(values);
           }}
         >
           <Form>

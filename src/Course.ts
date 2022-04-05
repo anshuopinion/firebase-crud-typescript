@@ -10,7 +10,7 @@ import {
 } from "firebase/firestore";
 
 export interface ICourse {
-  id: string;
+  id?: string;
   name: string;
   students: number;
   type: string;
@@ -36,7 +36,7 @@ class Course {
     const { docs } = await getDocs(courseCollectionRef);
 
     return docs.map((doc) => {
-      return doc.data() as ICourse;
+      return { ...doc.data(), id: doc.id } as ICourse;
     });
   };
 

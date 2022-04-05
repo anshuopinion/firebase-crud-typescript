@@ -1,4 +1,4 @@
-import { Button, Flex, Stack, useDisclosure } from "@chakra-ui/react";
+import { Button, Flex, Icon, Stack, useDisclosure } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import {
   InputControl,
@@ -7,29 +7,37 @@ import {
   SubmitButton,
 } from "formik-chakra-ui";
 import { FC, useState } from "react";
-import Course from "../Course";
+import { FaEdit } from "react-icons/fa";
+import Course, { ICourse } from "../Course";
 import Modal from "./Modal";
 
-interface IAddCourseProps {
+interface IUpdateCourseProps {
   fetchCourse: () => void;
+  course: ICourse;
 }
 
-const AddCourse: FC<IAddCourseProps> = ({ fetchCourse }) => {
+const UpdateCourse: FC<IUpdateCourseProps> = ({ fetchCourse, course }) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const [isLoading, setIsLoading] = useState(false);
 
   return (
     <>
-      <Modal title="Add Course" isOpen={isOpen} onClose={onClose}>
+      <Modal title="Update Course" isOpen={isOpen} onClose={onClose}>
         <Formik
-          initialValues={{ name: "", students: "", type: "" }}
+          initialValues={{
+            name: course.name,
+            students: course.students,
+            type: course.type,
+          }}
           onSubmit={async (values) => {
             setIsLoading(true);
             try {
-              await Course.addCourse({
-                ...values,
-                students: parseInt(values.students),
-              });
+              if (course.id) {
+                await Course.updateCourse(course.id, {
+                  ...values,
+                  students: values.students,
+                });
+              }
             } catch (error) {
               console.log(error);
             } finally {
@@ -60,16 +68,16 @@ const AddCourse: FC<IAddCourseProps> = ({ fetchCourse }) => {
             </Stack>
             <Flex justify="end">
               <SubmitButton isLoading={isLoading} colorScheme="purple">
-                Add Course
+                Update Course
               </SubmitButton>
             </Flex>
           </Form>
         </Formik>
       </Modal>
-      <Button onClick={onOpen} mb="4">
-        Add Course
-      </Button>
+      <Icon onClick={onOpen} fontSize="xl">
+        <FaEdit />
+      </Icon>
     </>
   );
 };
-export default AddCourse;
+export default UpdateCourse;

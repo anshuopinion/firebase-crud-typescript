@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 import Course, { ICourse } from "./Course";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import AddCourse from "./components/AddCourse";
+import UpdateCourse from "./components/UpdateCourse";
 const App = () => {
   const [courses, setCourses] = useState<ICourse[]>([]);
 
@@ -24,6 +25,7 @@ const App = () => {
   useEffect(() => {
     fetchCourses();
   }, []);
+  console.log(courses);
 
   return (
     <>
@@ -49,9 +51,7 @@ const App = () => {
                 <Td>{course.type}</Td>
                 <Td>
                   <Flex gap="4">
-                    <Icon fontSize="xl">
-                      <FaEdit />
-                    </Icon>
+                    <UpdateCourse fetchCourse={fetchCourses} course={course} />
                     <Icon color="red.300" fontSize="xl">
                       <FaTrash />
                     </Icon>

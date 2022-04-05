@@ -6,13 +6,18 @@ import {
   SelectControl,
   SubmitButton,
 } from "formik-chakra-ui";
-import { FC } from "react";
+import { FC, useState } from "react";
+import Course from "../Course";
 import Modal from "./Modal";
 
-interface IAddCourseProps {}
+interface IAddCourseProps {
+  fetchCourse: () => void;
+}
 
-const AddCourse: FC<IAddCourseProps> = ({}) => {
+const AddCourse: FC<IAddCourseProps> = ({ fetchCourse }) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
+  const [isLoading, setIsLoading] = useState(false);
+
   return (
     <>
       <Modal title="Add Course" isOpen={isOpen} onClose={onClose}>
@@ -20,6 +25,15 @@ const AddCourse: FC<IAddCourseProps> = ({}) => {
           initialValues={{ name: "", students: "", type: "" }}
           onSubmit={(values) => {
             console.log(values);
+            setIsLoading(true);
+            Course.addCourse({
+              ...values,
+              id: Math.random().toString(),
+              students: parseInt(values.students),
+            });
+            setIsLoading(false);
+            fetchCourse();
+            onClose();
           }}
         >
           <Form>
@@ -36,13 +50,15 @@ const AddCourse: FC<IAddCourseProps> = ({}) => {
               />
               <SelectControl name="type" label="Name">
                 <option value="">Select a course type</option>
-                <option value="hard">Full Stack</option>
-                <option value="medium">Back End</option>
-                <option value="easy">Front End</option>
+                <option value="hard">Hard</option>
+                <option value="medium">Medium</option>
+                <option value="easy">Easy</option>
               </SelectControl>
             </Stack>
             <Flex justify="end">
-              <SubmitButton colorScheme="purple">Add Course</SubmitButton>
+              <SubmitButton isLoading={isLoading} colorScheme="purple">
+                Add Course
+              </SubmitButton>
             </Flex>
           </Form>
         </Formik>

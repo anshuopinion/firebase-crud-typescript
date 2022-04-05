@@ -1,5 +1,4 @@
 import {
-  Button,
   Container,
   Flex,
   Heading,
@@ -17,11 +16,12 @@ import { FaEdit, FaTrash } from "react-icons/fa";
 import AddCourse from "./components/AddCourse";
 const App = () => {
   const [courses, setCourses] = useState<ICourse[]>([]);
+
+  const fetchCourses = async () => {
+    const courses = await Course.getCourses();
+    setCourses(courses);
+  };
   useEffect(() => {
-    const fetchCourses = async () => {
-      const courses = await Course.getCourses();
-      setCourses(courses);
-    };
     fetchCourses();
   }, []);
 
@@ -31,7 +31,7 @@ const App = () => {
         Firebase Course Mangement
       </Heading>
       <Container maxW="750px" mt="8">
-        <AddCourse />
+        <AddCourse fetchCourse={fetchCourses} />
         <Table variant="striped">
           <Thead>
             <Tr>
@@ -43,7 +43,7 @@ const App = () => {
           </Thead>
           <Tbody>
             {courses.map((course) => (
-              <Tr key={course.id}>
+              <Tr key={course.name}>
                 <Td>{course.name}</Td>
                 <Td>{course.students}</Td>
                 <Td>{course.type}</Td>

@@ -1,45 +1,69 @@
-import { useState } from 'react'
-import logo from './logo.svg'
-import './App.css'
-
-function App() {
-  const [count, setCount] = useState(0)
+import {
+  Button,
+  Container,
+  Flex,
+  Heading,
+  Icon,
+  Table,
+  Tbody,
+  Td,
+  Th,
+  Thead,
+  Tr,
+} from "@chakra-ui/react";
+import { onSnapshot } from "firebase/firestore";
+import { useEffect, useState } from "react";
+import Course, { ICourse } from "./Course";
+import { FaEdit, FaTrash } from "react-icons/fa";
+const App = () => {
+  const [courses, setCourses] = useState<ICourse[]>([]);
+  useEffect(() => {
+    const fetchCourses = async () => {
+      const courses = await Course.getCourses();
+      setCourses(courses);
+    };
+    fetchCourses();
+  }, []);
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>Hello Vite + React!</p>
-        <p>
-          <button type="button" onClick={() => setCount((count) => count + 1)}>
-            count is: {count}
-          </button>
-        </p>
-        <p>
-          Edit <code>App.tsx</code> and save to test HMR updates.
-        </p>
-        <p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-          {' | '}
-          <a
-            className="App-link"
-            href="https://vitejs.dev/guide/features.html"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Vite Docs
-          </a>
-        </p>
-      </header>
-    </div>
-  )
-}
+    <>
+      <Heading py="4" bg="purple.800" color="white" textAlign="center">
+        Firebase Course Mangement
+      </Heading>
+      <Container maxW="750px" mt="8">
+        <Button mb="4"> Add Course</Button>
+        <Table variant="striped">
+          <Thead>
+            <Tr>
+              <Th>Name</Th>
+              <Th>Students Enrolled</Th>
+              <Th>Type</Th>
+              <Th></Th>
+            </Tr>
+          </Thead>
+          <Tbody>
+            {courses.map((course) => (
+              <Tr key={course.id}>
+                <Td>{course.name}</Td>
+                <Td>{course.students}</Td>
+                <Td>{course.type}</Td>
+                <Td>
+                  <Flex gap="4">
+                    <Icon fontSize="xl">
+                      <FaEdit />
+                    </Icon>
+                    <Icon color="red.300" fontSize="xl">
+                      <FaTrash />
+                    </Icon>
+                  </Flex>
+                </Td>
+              </Tr>
+            ))}
+          </Tbody>
+        </Table>
+      </Container>
+    </>
+  );
+};
 
-export default App
+export default App;

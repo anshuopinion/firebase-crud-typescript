@@ -21,7 +21,14 @@ import UpdateCourse from "../components/UpdateCourse";
 import { useNavigate } from "react-router-dom";
 import { SiFirebase } from "react-icons/si";
 const App = () => {
-  const [courses, setCourses] = useState<ICourseDoc[]>([]);
+  const [courses, setCourses] = useState<ICourseDoc[]>([
+    {
+      id: "hi",
+      name: "Demo Course",
+      students: 100,
+      type: "easy",
+    },
+  ]);
   const navigate = useNavigate();
 
   return (

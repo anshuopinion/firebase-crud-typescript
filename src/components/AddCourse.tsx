@@ -7,7 +7,7 @@ import {
   SubmitButton,
 } from "formik-chakra-ui";
 import { FC, useState } from "react";
-import Course from "../Course";
+import CourseHelperClass from "../CourseHelperClass";
 import Modal from "./Modal";
 
 interface IAddCourseProps {
@@ -26,7 +26,7 @@ const AddCourse: FC<IAddCourseProps> = ({ fetchCourse }) => {
           onSubmit={async (values) => {
             setIsLoading(true);
             try {
-              await Course.addCourse({
+              await CourseHelperClass.addCourse({
                 ...values,
                 students: parseInt(values.students),
               });
@@ -51,7 +51,7 @@ const AddCourse: FC<IAddCourseProps> = ({ fetchCourse }) => {
                 label="Students Enrolled"
                 helperText="Enter Number of Students"
               />
-              <SelectControl name="type" label="Name">
+              <SelectControl name="type" label="Course Type">
                 <option value="">Select a course type</option>
                 <option value="hard">Hard</option>
                 <option value="medium">Medium</option>

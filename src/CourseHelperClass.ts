@@ -10,16 +10,18 @@ import {
 } from "firebase/firestore";
 
 export interface ICourse {
-  id?: string;
   name: string;
   students: number;
   type: string;
+}
+export interface ICourseDoc extends ICourse {
+  id: string;
 }
 
 const courseStr = "course";
 
 const courseCollectionRef = collection(db, courseStr);
-class Course {
+class CourseHelperClass {
   addCourse = (course: ICourse) => {
     return addDoc(courseCollectionRef, course);
   };
@@ -36,14 +38,15 @@ class Course {
     const { docs } = await getDocs(courseCollectionRef);
 
     return docs.map((doc) => {
-      return { ...doc.data(), id: doc.id } as ICourse;
+      return { ...doc.data(), id: doc.id } as ICourseDoc;
     });
   };
 
-  getCourse = (id: string) => {
+  getCourse = async (id: string) => {
     const bookDoc = doc(db, courseStr, id);
-    return getDoc(bookDoc);
+    const fetchedDoc = await getDoc(bookDoc);
+    return { ...fetchedDoc.data(), id: fetchedDoc.id } as ICourseDoc;
   };
 }
 
-export default new Course();
+export default new CourseHelperClass();

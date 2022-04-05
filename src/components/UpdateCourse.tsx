@@ -1,4 +1,4 @@
-import { Button, Flex, Icon, Stack, useDisclosure } from "@chakra-ui/react";
+import { Flex, Icon, Stack, useDisclosure } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import {
   InputControl,
@@ -8,12 +8,12 @@ import {
 } from "formik-chakra-ui";
 import { FC, useState } from "react";
 import { FaEdit } from "react-icons/fa";
-import Course, { ICourse } from "../Course";
+import CourseHelperClass, { ICourse, ICourseDoc } from "../CourseHelperClass";
 import Modal from "./Modal";
 
 interface IUpdateCourseProps {
   fetchCourse: () => void;
-  course: ICourse;
+  course: ICourseDoc;
 }
 
 const UpdateCourse: FC<IUpdateCourseProps> = ({ fetchCourse, course }) => {
@@ -32,12 +32,10 @@ const UpdateCourse: FC<IUpdateCourseProps> = ({ fetchCourse, course }) => {
           onSubmit={async (values) => {
             setIsLoading(true);
             try {
-              if (course.id) {
-                await Course.updateCourse(course.id, {
-                  ...values,
-                  students: values.students,
-                });
-              }
+              await CourseHelperClass.updateCourse(course.id, {
+                ...values,
+                students: values.students,
+              });
             } catch (error) {
               console.log(error);
             } finally {
@@ -59,7 +57,7 @@ const UpdateCourse: FC<IUpdateCourseProps> = ({ fetchCourse, course }) => {
                 label="Students Enrolled"
                 helperText="Enter Number of Students"
               />
-              <SelectControl name="type" label="Name">
+              <SelectControl name="type" label="Course Type">
                 <option value="">Select a course type</option>
                 <option value="hard">Hard</option>
                 <option value="medium">Medium</option>

@@ -19,7 +19,7 @@ import AddCourse from "../components/AddCourse";
 import UpdateCourse from "../components/UpdateCourse";
 import { useNavigate } from "react-router-dom";
 import { SiFirebase } from "react-icons/si";
-const App = () => {
+const Home = () => {
   const [courses, setCourses] = useState([
     {
       id: "hi",
@@ -100,4 +100,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default Home;

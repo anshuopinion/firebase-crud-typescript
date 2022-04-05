@@ -19,16 +19,24 @@ import AddCourse from "../components/AddCourse";
 import UpdateCourse from "../components/UpdateCourse";
 import { useNavigate } from "react-router-dom";
 import { SiFirebase } from "react-icons/si";
-const App = () => {
-  const [courses, setCourses] = useState([
-    {
-      id: "hi",
-      name: "Demo Course",
-      students: 100,
-      type: "easy",
-    },
-  ]);
+import CourseHelperClass, { ICourseDoc } from "../CourseHelperClass";
+const Home = () => {
+  const [courses, setCourses] = useState<ICourseDoc[]>([]);
   const navigate = useNavigate();
+
+  const fetchCourses = async () => {
+    const courses = await CourseHelperClass.getCourses();
+    setCourses(courses);
+  };
+
+  useEffect(() => {
+    fetchCourses();
+  }, []);
+
+  const deleteCourseHandler = async (id: string) => {
+    await CourseHelperClass.deleteCourse(id);
+    fetchCourses();
+  };
 
   return (
     <>
@@ -42,7 +50,7 @@ const App = () => {
         </Heading>
       </Flex>
       <Container maxW="container.lg" mt="8">
-        <AddCourse />
+        <AddCourse fetchCourses={fetchCourses} />
         <TableContainer>
           <Table variant="striped" colorScheme="purple">
             <Thead>
@@ -55,7 +63,7 @@ const App = () => {
             </Thead>
             <Tbody>
               {courses.map((course) => (
-                <Tr key={course.name}>
+                <Tr key={course.id}>
                   <Td>{course.name}</Td>
                   <Td>{course.students}</Td>
                   <Td>
@@ -80,8 +88,12 @@ const App = () => {
                       >
                         <FaEye />
                       </Icon>
-                      <UpdateCourse />
+                      <UpdateCourse
+                        fetchCourses={fetchCourses}
+                        course={course}
+                      />
                       <Icon
+                        onClick={() => deleteCourseHandler(course.id)}
                         _hover={{ color: "red.500" }}
                         color="red.300"
                         fontSize="xl"
@@ -100,4 +112,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default Home;

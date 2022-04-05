@@ -6,14 +6,13 @@ import CourseHelperClass, { ICourseDoc } from "../CourseHelperClass";
 const Course = () => {
   const { id } = useParams();
   const [course, setCourse] = useState<ICourseDoc>();
-
   const fetchCourse = async () => {
     if (id) {
       const course = await CourseHelperClass.getCourse(id);
-
       setCourse(course);
     }
   };
+
   useEffect(() => {
     fetchCourse();
   }, []);

@@ -8,13 +8,14 @@ import {
 } from "formik-chakra-ui";
 import { FC, useState } from "react";
 import CourseHelperClass from "../CourseHelperClass";
+
 import Modal from "./Modal";
 
 interface IAddCourseProps {
-  fetchCourse: () => void;
+  fetchCourses: () => void;
 }
 
-const AddCourse: FC<IAddCourseProps> = ({ fetchCourse }) => {
+const AddCourse: FC<IAddCourseProps> = ({ fetchCourses }) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -24,17 +25,21 @@ const AddCourse: FC<IAddCourseProps> = ({ fetchCourse }) => {
         <Formik
           initialValues={{ name: "", students: "", type: "" }}
           onSubmit={async (values) => {
-            setIsLoading(true);
+            console.log(values);
+
             try {
+              setIsLoading(true);
               await CourseHelperClass.addCourse({
-                ...values,
+                name: values.name,
                 students: parseInt(values.students),
+                type: values.type,
               });
             } catch (error) {
               console.log(error);
+              alert(error);
             } finally {
               setIsLoading(false);
-              fetchCourse();
+              fetchCourses();
               onClose();
             }
           }}

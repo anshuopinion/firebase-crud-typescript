@@ -1,4 +1,5 @@
-import { db } from "./firbaseConfig";
+import { db } from "./firestoreConfig";
+
 import {
   collection,
   getDoc,
@@ -18,33 +19,31 @@ export interface ICourseDoc extends ICourse {
   id: string;
 }
 
-const courseStr = "course";
-
+const courseStr = "courses";
 const courseCollectionRef = collection(db, courseStr);
-class CourseHelperClass {
-  addCourse = (course: ICourse) => {
-    return addDoc(courseCollectionRef, course);
-  };
-  updateCourse = (id: string, course: ICourse) => {
-    const bookDoc = doc(db, courseStr, id);
-    return updateDoc(bookDoc, course as any);
-  };
-  deleteCourse = (id: string) => {
-    const bookDoc = doc(db, courseStr, id);
-    return deleteDoc(bookDoc);
-  };
 
+class CourseHelperClass {
   getCourses = async () => {
     const { docs } = await getDocs(courseCollectionRef);
-
     return docs.map((doc) => {
       return { ...doc.data(), id: doc.id } as ICourseDoc;
     });
   };
 
+  addCourse = async (course: ICourse) => {
+    return addDoc(courseCollectionRef, course);
+  };
+  updateCourse = async (id: string, course: ICourse) => {
+    const courseDoc = doc(db, courseStr, id);
+    return updateDoc(courseDoc, course as any);
+  };
+  deleteCourse = async (id: string) => {
+    const courseDoc = doc(db, courseStr, id);
+    return deleteDoc(courseDoc);
+  };
   getCourse = async (id: string) => {
-    const bookDoc = doc(db, courseStr, id);
-    const fetchedDoc = await getDoc(bookDoc);
+    const courseDoc = doc(db, courseStr, id);
+    const fetchedDoc = await getDoc(courseDoc);
     return { ...fetchedDoc.data(), id: fetchedDoc.id } as ICourseDoc;
   };
 }

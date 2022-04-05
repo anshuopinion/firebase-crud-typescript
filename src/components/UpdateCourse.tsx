@@ -8,15 +8,16 @@ import {
 } from "formik-chakra-ui";
 import { FC, useState } from "react";
 import { FaEdit } from "react-icons/fa";
-import CourseHelperClass, { ICourse, ICourseDoc } from "../CourseHelperClass";
+import CourseHelperClass, { ICourseDoc } from "../CourseHelperClass";
+
 import Modal from "./Modal";
 
 interface IUpdateCourseProps {
-  fetchCourse: () => void;
   course: ICourseDoc;
+  fetchCourses: () => void;
 }
 
-const UpdateCourse: FC<IUpdateCourseProps> = ({ fetchCourse, course }) => {
+const UpdateCourse: FC<IUpdateCourseProps> = ({ course, fetchCourses }) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -30,17 +31,19 @@ const UpdateCourse: FC<IUpdateCourseProps> = ({ fetchCourse, course }) => {
             type: course.type,
           }}
           onSubmit={async (values) => {
-            setIsLoading(true);
             try {
+              setIsLoading(true);
               await CourseHelperClass.updateCourse(course.id, {
-                ...values,
+                name: values.name,
                 students: values.students,
+                type: values.type,
               });
             } catch (error) {
               console.log(error);
+              alert(error);
             } finally {
               setIsLoading(false);
-              fetchCourse();
+              fetchCourses();
               onClose();
             }
           }}

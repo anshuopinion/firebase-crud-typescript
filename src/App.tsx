@@ -11,10 +11,10 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
-import { onSnapshot } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import Course, { ICourse } from "./Course";
 import { FaEdit, FaTrash } from "react-icons/fa";
+import AddCourse from "./components/AddCourse";
 const App = () => {
   const [courses, setCourses] = useState<ICourse[]>([]);
   useEffect(() => {
@@ -31,7 +31,7 @@ const App = () => {
         Firebase Course Mangement
       </Heading>
       <Container maxW="750px" mt="8">
-        <Button mb="4"> Add Course</Button>
+        <AddCourse />
         <Table variant="striped">
           <Thead>
             <Tr>

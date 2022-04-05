@@ -14,14 +14,13 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import CourseHelperClass, { ICourseDoc } from "../CourseHelperClass";
 import { FaEye, FaTrash } from "react-icons/fa";
 import AddCourse from "../components/AddCourse";
 import UpdateCourse from "../components/UpdateCourse";
 import { useNavigate } from "react-router-dom";
 import { SiFirebase } from "react-icons/si";
 const App = () => {
-  const [courses, setCourses] = useState<ICourseDoc[]>([
+  const [courses, setCourses] = useState([
     {
       id: "hi",
       name: "Demo Course",

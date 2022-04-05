@@ -8,7 +8,7 @@ import {
 } from "formik-chakra-ui";
 import { FC, useState } from "react";
 import { FaEdit } from "react-icons/fa";
-import CourseHelperClass, { ICourse, ICourseDoc } from "../CourseHelperClass";
+
 import Modal from "./Modal";
 
 interface IUpdateCourseProps {}

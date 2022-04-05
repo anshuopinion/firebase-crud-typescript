@@ -7,7 +7,7 @@ import {
   SubmitButton,
 } from "formik-chakra-ui";
 import { FC, useState } from "react";
-import CourseHelperClass from "../CourseHelperClass";
+
 import Modal from "./Modal";
 
 interface IAddCourseProps {}
